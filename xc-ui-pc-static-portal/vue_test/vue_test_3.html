@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        
+    <meta charset="UTF-8">
+        <title>vue.js入门程序</title>
+      
+    <script src="/js/vue/vue.min.js"></script> 
+
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <!-- <li v-for="(item,index) in list" :key="index" v-if="index%2==0" >{{item}}---{{index}}</li> -->
+            <!-- <li  v-for="(index,value) in kurt" >{{value}}--{{index}}  </li> -->
+            <!-- <li v-for="{item,index} in userList" :key="item.kurt.username">
+                <div v-if="item.kurt.age==26" style="background: cadetblue">
+                    {{item}}
+                </div>
+                <div v-else="" style="background:crimson">
+
+                </div>
+
+            </li> -->
+             <li v‐for="(item,index) in userlist" :key="item.user.uname">
+                                <div v‐if="item.user.uname=='heima'" style="background: chartreuse"><!‐‐名称为heima的
+                    加背景色‐‐>
+                                    {{index}}‐{{item.user.uname}}‐{{item.user.age}}
+                                </div>
+                                <div v‐else="">
+                                    {{index}}‐{{item.user.uname}}‐{{item.user.age}}
+                                </div>
+                            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    var VM = new Vue({
+        el: "#app",
+        data: {
+            // list : [1,2,3,4,5,6],
+            // kurt :{usename:'kurt',age:25},
+            // kurtList:[
+            // {kurt:{username:'kurt1',age:26}},
+            // {kurt:{username:'kurt2',age:25}}
+            // ],
+            userlist:[
+                { user:{uname:'itcast',age:10}},
+                { user:{uname:'heima',age:11}}
+            ]
+
+
+        },
+        methods: {
+
+        },
+    });
+</script>
+
+</html>
