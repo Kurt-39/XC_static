@@ -1,7 +1,7 @@
 <template xmlns:el-table="http://www.w3.org/1999/html">
 <!-- 编写页面静态部分-->
   <div>
-    <el-button type="primary" size="small" v-on:click="changePage">主要按钮</el-button>
+    <el-button type="primary" size="small" v-on:click="query">主要按钮</el-button>
     <router-link  :to="{path:'/cms/page/add/',query:{
     page:this.params.page,
     siteId:this.params.siteId
@@ -24,6 +24,18 @@
       <el-table-column prop="pageWebPath" label="访问路径" width="250"></el-table-column>
       <el-table-column prop="pagePhysicalPath" label="物理路径" width="250"></el-table-column>
       <el-table-column prop="pageCreateTime" label="创建时间" width="180"></el-table-column>
+      <el-table-column label="操作" width="80">
+        <template slot-scope="page" >
+          <el-button
+            size="small" type="text"
+            @click="edit(page.row.pageId)"
+          >编辑</el-button>
+          <el-button
+            size="small"type="text"
+            @click="del(page.row.pageId)">删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       background
@@ -35,6 +47,7 @@
   </div>
 </template>
 <script>
+
   import * as cmsApi from '../api/cms'
   export default {
     data() {
@@ -63,19 +76,61 @@
         })
 
       },
-      //实例生成开始获取参数
-      created:function(){
-        //从路由获取参数
-        this.params.page=Number.parseInt(this.$route.query.page||1);
-        this.params.siteId=this.$route.query.siteId||'';
+      //修改
+      edit:function(pageId){
+        this.$router.push({path: '/cms/page/edit/'+pageId,query:{
+          page: this.params.page,
+          siteId: this.params.siteId
+          }})
       },
-      //dom元素加载完毕后开始查询
-      mounted:function () {
-        this.query()
+      //删除
+      del:function(pageId){
+        this.$confirm('您确认提交吗?', '提示', { }).then(() => {
+          cmsApi.page_delete(pageId).then(res => {
+            if (res.success){
+              this.$message.success("删除成功");
+              this.query();
+            } else {
+              this.$message.fail("删除失败")
+              this.query();
+            }
+          })
+        })
 
-      }
+      },
+
+
+      //dom元素加载完毕后开始查询
+      /*mounted(){
+        //当DOM元素渲染完成后调用query
+        this.query()
+        //初始化站点列表
+        this.siteList = [
+          {
+            siteId:'5a751fab6abb5044e0d19ea1',
+            siteName:'门户主站'
+          },
+          {
+            siteId:'102',
+            siteName:'测试站'
+          }
+        ]
+      }*/
+
+    },
+    //实例生成开始获取参数
+    created:function(){
+
+      //从路由获取参数
+      this.params.page=Number.parseInt(this.$route.query.page||1);
+      this.params.siteId=this.$route.query.siteId||'';
+
+    },
+    mounted:function () {
+      this.query()
 
     }
+
   }
 </script>
 <style>
